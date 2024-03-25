@@ -332,7 +332,10 @@ func (baselineCheck *DatabaseBaselineCheckStruct) DatabasePerformanceTableIndexC
 						e["threshold"] = fmt.Sprintf(">%s%%",vi)
 						e["errorCode"] = "PF2-01"
 						e["checkType"] = "tableAutoPrimaryKeyUsageRate"
-						e["autoIncrement"] = strconv.Itoa(int(v["AUTO_INCREMENT"].(int64)))
+						if v["AUTO_INCREMENT"] != nil {
+                                                   e["autoIncrement"] = strconv.Itoa(int(v["AUTO_INCREMENT"].(int64)))
+                                                }
+						// e["autoIncrement"] = strconv.Itoa(int(v["AUTO_INCREMENT"].(int64)))
 						//检查是否存在自增主键溢出风险。统计数据库自增id列快要溢出的表
 						if strings.Contains(tmpColumnType, "unsigned") {
 							unsignedIntUsageRate, err := PublicClass.Strea.Percentage(v["AUTO_INCREMENT"], MunsignedInt)
